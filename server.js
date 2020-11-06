@@ -3,15 +3,23 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const server = express();
 const port = (process.env.PORT || 8080);
+const authenticator = require("./modules/auth");
+const { Router } = require("express");
+const secureEndpoints = require("./modules/secureEndpoint");
 
 server.set("port", port);
 server.use(express.static("public"));
 server.use(bodyParser.json());
 
-server.get("/start", function(req,res,next){
+server.use("/secure", secureEndpoints);
 
-});
+/*server.get("/start", authenticator, (req,res,next) =>{
+    
+        res.send("banananana").end();
 
-server.listen(app.get("port"), function(){
+    
+});*/
+
+server.listen(server.get("port"), function(){
     console.log("server running", server.get("port"));
 });
