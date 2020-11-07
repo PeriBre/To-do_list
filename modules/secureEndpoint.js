@@ -8,4 +8,6 @@ secret.get("/", (req,res,next)=>{
 
 })
 
+process.env.DATA_URL
+
 module.exports = secret;

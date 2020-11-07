@@ -6,6 +6,38 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>hallo</h1>
+    username: <input type="txt" id="username">
+    password: <input type ="password" id="password">
+    <button id="createUser">Create user</button>
+
+    <script>
+        let usernameInput = document.getElementById("username");
+        let passwordInput = document.getElementById("password");
+
+
+        document.getElementById("createUser").onclick = function(evt){
+
+            if(usernameInput.value.length < 3 && passwordInput.value.length < 3){
+                alert("Nei!");
+                return
+            }
+
+            let body = {
+                username:usernameInput.value,
+                password:passwordInput.value
+            }
+            let cfg ={
+                method:"POST",
+                headers:{
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body)
+            }
+
+           fetch("/user",cfg).then(resp => {
+               console.log(resp.status);
+           })
+        }
+    </script>
 </body>
 </html>
