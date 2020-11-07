@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const server = express();
 const port = (process.env.PORT || 8080);
-const authenticator = require("./modules/auth");
+
 const { Router } = require("express");
 const secureEndpoints = require("./modules/secureEndpoint");
 
