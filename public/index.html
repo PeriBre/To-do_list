@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
 <body>
-    username: <input type="txt" id="username">
-    password: <input type ="password" id="password">
-    <button id="createUser">Create user</button>
+    <!-- //createUser -->
+    <form class="box" action="logintest.html" method="post">
+        <h1>Create User</h1>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <input type="button" value="Create User" id="createUser">
+    </form>
 
     <script>
         let usernameInput = document.getElementById("username");
