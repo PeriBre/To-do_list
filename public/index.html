@@ -13,18 +13,24 @@
         <input type="text" placeholder="Username" id="username">
         <input type="password" placeholder="Password" id="password">
         <input type="button" value="Create User" id="createUser">
+        <p id="txt"></p>
     </form>
+
+    
 
     <script>
         let usernameInput = document.getElementById("username");
         let passwordInput = document.getElementById("password");
+        let warningTxt = document.getElementById("txt")
 
 
         document.getElementById("createUser").onclick = function(evt){
 
-            if(usernameInput.value.length < 3 && passwordInput.value.length < 3){
-                alert("Nei!");
+            if(usernameInput.value.length < 4 || passwordInput.value.length < 4){
+                warningTxt.innerHTML = "Brukernavn eller passord for kort, minimum 4 tegn";
                 return
+            }else{
+                warningTxt.innerHTML = "User created successfully"
             }
 
             let body = {

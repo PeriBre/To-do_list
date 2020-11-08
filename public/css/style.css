@@ -5,6 +5,10 @@ body{
     background: #191919;
 }
 
+body p{
+    color: white;
+}
+
 .box{
     width: 300px;
     padding: 40px;
@@ -63,3 +67,5 @@ body{
 .box input[type="button"]:hover{
     background: #2ecc71;
 }
+
+
