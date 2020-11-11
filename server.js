@@ -14,13 +14,13 @@ server.use(bodyParser.json());
 
 server.use("/secure", secureEndpoints);
 
-server.post("/user", /*async*/function(req,res){
+server.post("/user", async function(req,res){
 
     const newUser = new user(req.body.username, req.body.password);
 
-    //await newUser.create();
+    await newUser.create();
 
-    res.status(200)./*json(newUser).*/end();
+    res.status(200).json(newUser).end();
     console.log(req.body);
 
 });

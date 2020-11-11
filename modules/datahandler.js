@@ -1,5 +1,5 @@
 const pg = require("pg");
-//const dbCredentials = process.env.DATABASE_URL || require("../localenv").credentials;
+const dbCredentials = process.env.DATABASE_URL || require("../localenv").credentials;
 
 class StorageHandler {
     constructor(credentials){
@@ -11,12 +11,27 @@ class StorageHandler {
         };
     }
 
-    /*async insert(table,...params){
+    async insertUser(username, password){
         const client = new pg.Client(this.credentials);
         let results = null;
         try{
             await client.connect();
-            results = await client.query('SELECT message from "Secrets" where id=$1', [secretId]);
+            results = await client.query('INSERT INTO "public"."user"("username", "password") VALUES("$1", "$2") RETURNING *;', [username, password]);
+            results = results.row[0].message;
+            client.end();
+        }catch(err){
+            client.end();
+            results = err;
+        }
+    
+        return results;
+    }
+    /*async insert(...params){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('INSERT INTO "public"."$1"("username", "password") VALUES("$2", "$3") RETURNING *;', params);
             results = results.row[0].message;
             client.end();
         }catch(err){
@@ -31,4 +46,4 @@ class StorageHandler {
 
 
 
-module.exports = /*new*/ StorageHandler/*(dbCredentials)*/
+module.exports = new StorageHandler(dbCredentials)

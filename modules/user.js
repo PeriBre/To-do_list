@@ -10,7 +10,7 @@ class User{
 
     async create(){
         try{
-            await database.insert("user",this.username,this.password);
+            await database.insertUser(this.username,this.password);
         }catch(error){
             console.error(error)
         }
