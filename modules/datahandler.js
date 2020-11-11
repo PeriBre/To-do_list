@@ -16,11 +16,11 @@ class StorageHandler {
         let results = null;
         try{
             await client.connect();
-            results = await client.query('INSERT INTO "public"."user"("username", "password") VALUES("$1", "$2") RETURNING *;', [username, password]);
-            results = results.row[0].message;
+            results = await client.query('INSERT INTO "public"."users"("username", "password") VALUES($1, $2) RETURNING *;', [username, password]);
             client.end();
         }catch(err){
             client.end();
+            console.log(err);
             results = err;
         }
     

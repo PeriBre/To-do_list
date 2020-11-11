@@ -1,16 +1,22 @@
 const database = require("./datahandler")
+const crypto = require("crypto");
+const secret = process.env.hashSecret || require("../localenv").hashSecret;
+/*
+*/
 
 class User{
 
     constructor(username, password){
         this.username = username;
-        this.password = password;
+        this.password = crypto.createHmac("sha256", secret)
+            .update(password)
+            .digest("hex");
         this.valid = false
     }
 
     async create(){
         try{
-            await database.insertUser(this.username,this.password);
+            let response = await database.insertUser(this.username,this.password);
         }catch(error){
             console.error(error)
         }

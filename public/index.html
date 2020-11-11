@@ -13,6 +13,7 @@
         <input type="text" placeholder="Username" id="username">
         <input type="password" placeholder="Password" id="password">
         <input type="button" value="Create User" id="createUser">
+        <input type="button" value="Login" id="loginUser">
         <p id="txt"></p>
     </form>
 
@@ -22,7 +23,6 @@
         let usernameInput = document.getElementById("username");
         let passwordInput = document.getElementById("password");
         let warningTxt = document.getElementById("txt")
-
 
         document.getElementById("createUser").onclick = function(evt){
 
@@ -48,6 +48,29 @@
            fetch("/user",cfg).then(resp => {
                console.log(resp.status);
            })
+        }
+
+        document.getElementById("loginUser").onclick = function(evt){
+
+            let body = {
+                username:usernameInput.value,
+                password:passwordInput.value
+            }
+            
+            let credentials = "Basic" + window.btoa(`${body.username}:${body.password}`)
+
+            let cfg ={
+                method:"POST",
+                headers:{
+                    "content-type": "application/json",
+                    "authorization": credentials
+                },
+                body:JSON.stringify(body)
+            }
+
+            fetch("/user",cfg).then(resp => {
+            console.log(resp.status);
+            })
         }
     </script>
 </body>
