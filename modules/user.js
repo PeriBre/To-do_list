@@ -1,4 +1,4 @@
-const database = require("./datahandler")
+const database = require("./datahandler");
 const crypto = require("crypto");
 const secret = process.env.hashSecret || require("../localenv").hashSecret;
 /*

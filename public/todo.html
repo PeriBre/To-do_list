@@ -3,12 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
 
-<input id="inpTask" type="text" placeholder="Task">
-<input type="button" id="submitTask" value="add"></input>
 <body>
+    <form class="box" method="post">
+        <input id="inpTodo" type="text" placeholder="Todo">
+        <input id="inpList" type="text" placeholder="List">
+        <input type="button" id="submitTask" value="add"></input>
+    </form>
     
+   <!--  <table class="table">
+        <thead>
+            <tr>
+                <th scope ="col">TODO</th>
+            </tr>
+        </thead>
+        <tbody id="todo_table">
+    
+        </tbody>
+        <form id="complete_todo_form" action="/complete_todo/" method="POST"></form>
+    </table> -->
+
+    <script>
+
+
+        document.getElementById("submitTask").onclick = function(evt){
+            let todo=document.getElementById("inpTodo");
+            let list=document.getElementById("inpList");
+           
+
+            let body={
+                todo : todo.value,
+                listItems : list.value
+            }
+            
+
+            let cfg = {
+                method:"POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body)
+            }
+            
+            fetch("/todo",cfg).then(resp => {
+                console.log(resp.status)
+            })
+            
+        }
+
+    </script>
 </body>
 </html>

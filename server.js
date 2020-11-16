@@ -7,6 +7,7 @@ const port = (process.env.PORT || 8080);
 const { Router } = require("express");
 const secureEndpoints = require("./modules/secureEndpoint");
 const user = require("./modules/user")
+const todo = require("./modules/todo")
 
 server.set("port", port);
 server.use(express.static("public"));
@@ -23,6 +24,16 @@ server.post("/user", async function(req,res){
     res.status(200).json(newUser).end();
     console.log(req.body);
 
+});
+
+server.post("/todo", async function(req,res){
+
+    const newTodo = new todo(req.body.todo, req.body.listItems);
+
+    await newTodo.create();
+
+    res.status(200).json(newTodo).end();
+    console.log(req.body);
 });
 
 /*server.get("/start", authenticator, (req,res,next) =>{

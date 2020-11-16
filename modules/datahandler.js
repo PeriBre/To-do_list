@@ -1,6 +1,8 @@
 const pg = require("pg");
 const dbCredentials = process.env.DATABASE_URL || require("../localenv").credentials;
 
+let date = new Date();
+
 class StorageHandler {
     constructor(credentials){
         this.credentials = {
@@ -17,6 +19,22 @@ class StorageHandler {
         try{
             await client.connect();
             results = await client.query('INSERT INTO "public"."users"("username", "password") VALUES($1, $2) RETURNING *;', [username, password]);
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+    
+        return results;
+    }
+
+    async insertTodo(todo, listItems){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('INSERT INTO "public"."todo"("todo", "complete", "date_complete", "listItems") VALUES($1, $2, $3, $4) RETURNING *;', [todo, 0, date, listItems]);
             client.end();
         }catch(err){
             client.end();
