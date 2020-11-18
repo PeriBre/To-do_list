@@ -10,7 +10,7 @@ class Todo{
 
     async create(){
         try{
-            let response = await database.insertTodo(this.todo,this.listItems);
+            let response = await database.insertTodo(this.todo, this.listItems);
         }catch(error){
             console.error(error)
         }

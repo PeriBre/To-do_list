@@ -3,6 +3,8 @@ const dbCredentials = process.env.DATABASE_URL || require("../localenv").credent
 
 let date = new Date();
 
+const db = dbCredentials
+
 class StorageHandler {
     constructor(credentials){
         this.credentials = {
@@ -44,6 +46,56 @@ class StorageHandler {
     
         return results;
     }
+
+    async getTodo(){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('SELECT "todo", "listItems" FROM todo');
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+        
+        return results;
+
+    }
+
+    async updateTodo(title, description){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query(`UPDATE todo SET title = $1, description = $2 WHERE id = $3`)[title, description, req.params.id];
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+        
+        return results;
+
+    }
+
+    async deleteTodo(){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query(`DELETE FROM todo WHERE id = $1`)[req.params.id];
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+        
+        return results;
+    }
     /*async insert(...params){
         const client = new pg.Client(this.credentials);
         let results = null;
@@ -64,4 +116,4 @@ class StorageHandler {
 
 
 
-module.exports = new StorageHandler(dbCredentials)
+module.exports = new StorageHandler(dbCredentials);
