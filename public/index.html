@@ -8,23 +8,32 @@
 </head>
 <body>
     <!-- //createUser -->
-    <form class="box" action="logintest.html" method="post">
-        <h1>Create User</h1>
+    <form class="box" method="post">
+        <h1>WELCOME</h1>
+        <hr>
         <input type="text" placeholder="Username" id="username">
         <input type="password" placeholder="Password" id="password">
+        <input type="button" value="Login" id="loginUser">
         <input type="button" value="Create User" id="createUser">
+        <p id="txt"></p>
     </form>
+
+    <a href="todo.html"><Button>move to todo input</Button></a>
+
+    
 
     <script>
         let usernameInput = document.getElementById("username");
         let passwordInput = document.getElementById("password");
-
+        let warningTxt = document.getElementById("txt")
 
         document.getElementById("createUser").onclick = function(evt){
 
-            if(usernameInput.value.length < 3 && passwordInput.value.length < 3){
-                alert("Nei!");
+            if(usernameInput.value.length < 4 || passwordInput.value.length < 4){
+                warningTxt.innerHTML = "Brukernavn eller passord for kort, minimum 4 tegn";
                 return
+            }else{
+                warningTxt.innerHTML = "User created successfully"
             }
 
             let body = {
@@ -42,6 +51,29 @@
            fetch("/user",cfg).then(resp => {
                console.log(resp.status);
            })
+        }
+
+        document.getElementById("loginUser").onclick = function(evt){
+
+            let body = {
+                username:usernameInput.value,
+                password:passwordInput.value
+            }
+            
+            let credentials = "Basic" + window.btoa(`${body.username}:${body.password}`)
+
+            let cfg ={
+                method:"POST",
+                headers:{
+                    "content-type": "application/json",
+                    "authorization": credentials
+                },
+                body:JSON.stringify(body)
+            }
+
+            fetch("/user",cfg).then(resp => {
+            console.log(resp.status);
+            })
         }
     </script>
 </body>
