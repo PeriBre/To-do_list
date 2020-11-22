@@ -71,8 +71,8 @@ body{
     border: 0;
     background: none;
     display: block;
-    width: 40%;
-    margin: 20px auto;
+    width: 50%;
+    margin: 10px auto;
     margin-left: 10px;
     margin-right: 10px;
     text-align: center;
@@ -83,7 +83,7 @@ body{
     border-radius: 24px;
     transition: 0.25s;
     cursor: pointer;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 

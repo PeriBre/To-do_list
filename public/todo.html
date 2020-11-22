@@ -14,7 +14,10 @@
         <input id="inpTodo" type="text" placeholder="Todo">
         <input id="inpList" type="text" placeholder="List">
         <input type="button" id="submitTask" value="add"></input>
-
+    </div>
+    <div id="header" class="header">
+        <input id="inpDelete" type ="text" placeholder="Delete ID">
+        <input type="button" id="delBtn" value="delete">
     </div>
 
     <hr>
@@ -23,21 +26,6 @@
 
     <p id="outtext"></p>
     
-
-    <!--<a href="todoread.html"><Button>move to todo list</Button></a>-->
-    
-   <!--  <table class="table">
-        <thead>
-            <tr>
-                <th scope ="col">TODO</th>
-            </tr>
-        </thead>
-        <tbody id="todo_table">
-    
-        </tbody>
-        <form id="complete_todo_form" action="/complete_todo/" method="POST"></form>
-    </table> -->
-
     <script>
 
         let todo=document.getElementById("inpTodo");
@@ -96,16 +84,24 @@
 
                         <ul>
                         <li>${tododata.listItems}</li>
+                        <p>delete id: ${tododata.todo_id}</p>
                         </ul>
-                        <button id="delBtn">Delete</button>
-                        <hr>
                     `
                     div.innerHTML = html;
-                    todoContainer.appendChild(div);
-                    document.getElementById("delBtn").onclick = function(evt){
+                    todoContainer.appendChild(div);     
+            }
+            }catch(err){
+                outtext.innerHTML = err;
+        }}
+
+//-------------------------------------------------------------------------------------------------------
+
+        let deleteId = document.getElementById("inpDelete");
+
+        document.getElementById("delBtn").onclick = function(evt){
                         console.log("you pressed me!!!!");
                         let body={
-                            todo: todo.value/*,
+                            id: deleteId.value/*,
                             listItems: tododata.listItems*/
                         }
                         
@@ -116,16 +112,15 @@
                             },
                             body:JSON.stringify(body)
                         }
+
                         
                         fetch("/del",cfg).then(resp => {
                             console.log(resp.status)
-                        })
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        }, 100)
                     }
-                }
-            }catch(err){
-                outtext.innerHTML = err;
-            }
-        }
 
         
 

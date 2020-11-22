@@ -5,16 +5,7 @@ const authenticator = (req, res, next) => {
     
         const raw = req.headers.authorization.split(" ")[1];
         const [userName,password] = Buffer.from(raw, "base64").toString("UTF-8").split(":");
-        
-        const user = authenticate(userName,password)
-        if(user){
-            return res.status(403).end();
-            }
-            next();
 }
 
-function authenticate(userName,password){
-    return userName === "Per" && password === "KittyPus"
-}
 
 module.exports = authenticator

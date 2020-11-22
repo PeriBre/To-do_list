@@ -6,13 +6,14 @@ const port = (process.env.PORT || 8080);
 
 const db = require("./modules/datahandler");
 
-const { Router, response } = require("express");
+//const { Router, response } = require("express");
 const secureEndpoints = require("./modules/secureEndpoint");
 const user = require("./modules/user")
 const todo = require("./modules/todo")
 const deletetodo = require("./modules/deleteTodo");
-const gettodo = require ("./modules/gettodo")
-const custormersRouter = require("./modules/gettodo")
+const loginuser = require("./modules/loginuser");
+const custormersRouter = require("./modules/gettodo");
+//const { json } = require("body-parser");
 
 server.set("port", port);
 server.use(express.static("public"));
@@ -41,6 +42,21 @@ server.post("/user", async function(req,res){
     res.status(200).json(newUser).end();
     console.log(req.body);
 
+});
+
+server.post("/user/auth", async function(req,res){
+    const newLogin = new loginuser(req.body.username, req.body.password);
+    await newLogin.login();
+    
+    try{
+        if(newLogin.isValid){res.status(200).json({"loginUser": newLogin}).end();
+        console.log(newLogin);
+        }else{res.status(403).json("Forbidden").end();
+            return}
+    }catch(error){
+        console.error(error)
+    }
+    
 });
 
 server.post("/todo", async function(req,res){

@@ -16,11 +16,7 @@
         <input type="button" value="Login" id="loginUser">
         <input type="button" value="Create User" id="createUser">
         <p id="txt"></p>
-    </form>
-
-    <a href="todo.html"><Button>move to todo input</Button></a>
-
-    
+    </form>   
 
     <script>
         let usernameInput = document.getElementById("username");
@@ -53,27 +49,42 @@
            })
         }
 
-        document.getElementById("loginUser").onclick = function(evt){
-
+        document.getElementById("loginUser").onclick = async function(evt,err){
+            evt.preventDefault();
             let body = {
                 username:usernameInput.value,
                 password:passwordInput.value
             }
             
-            let credentials = "Basic" + window.btoa(`${body.username}:${body.password}`)
-
             let cfg ={
                 method:"POST",
                 headers:{
-                    "content-type": "application/json",
-                    "authorization": credentials
+                    "content-type": "application/json"
                 },
                 body:JSON.stringify(body)
             }
 
-            fetch("/user",cfg).then(resp => {
+            try{
+                let response = await fetch("user/auth",cfg);
+                let data = await response.json();
+
+
+                localStorage.setItem("logindata", JSON.stringify(data));
+
+
+                if(!data.loginUser){
+                    warningTxt.innerHTML = "Denne brukeren eksisterer ikke";
+                    return;
+                }else{
+                location.href = "todo.html";
+            }
+            }catch(err){
+                warningTxt.innerHTML = err;
+            }
+
+            /* fetch("/user",cfg).then(resp => {
             console.log(resp.status);
-            })
+            }) */
         }
     </script>
 </body>

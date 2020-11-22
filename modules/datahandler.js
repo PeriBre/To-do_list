@@ -3,8 +3,6 @@ const dbCredentials = process.env.DATABASE_URL || require("../localenv").credent
 
 let date = new Date();
 
-const db = dbCredentials
-
 class StorageHandler {
     constructor(credentials){
         this.credentials = {
@@ -31,6 +29,25 @@ class StorageHandler {
         return results;
     }
 
+    async insertLogin(username, password){
+        const client = new pg.Client(this.credentials);
+        let loginresponse = null;
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('SELECT username, password from public."users" where username = $1 and password = $2', [username,password]);
+            if(results.rows.length > 0){loginresponse = results.rows[0]
+            }else(loginresponse = null);
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+    
+        return loginresponse;
+    }
+
     async insertTodo(todo, listItems){
         const client = new pg.Client(this.credentials);
         let results = null;
@@ -52,7 +69,7 @@ class StorageHandler {
         let results = null;
         try{
             await client.connect();
-            results = await client.query('SELECT "todo", "listItems" FROM todo');
+            results = await client.query('SELECT "todo_id", "todo", "listItems" FROM todo');
             client.end();
         }catch(err){
             client.end();
@@ -64,7 +81,7 @@ class StorageHandler {
 
     }
 
-    async updateTodo(title, description){
+ /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);
         let results = null;
         try{
@@ -79,24 +96,6 @@ class StorageHandler {
         
         return results;
 
-    }
-
-    /* async deleteTodo(id){
-        const client = new pg.Client(this.credentials);
-        let results = null;
-        let queryString = 'DELETE FROM todo WHERE todo."todo_id" = ' + id;
-        try{
-            await client.connect();
-            results = await client.query(queryString);
-            client.end();
-            console.log(results);
-        }catch(err){
-            client.end();
-            console.error(err);
-            results = err;
-        }
-        
-        return results;
     } */
 
     async deleteTodo(id, todo, listItems){
