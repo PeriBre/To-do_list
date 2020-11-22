@@ -6,10 +6,11 @@ const port = (process.env.PORT || 8080);
 
 const db = require("./modules/datahandler");
 
-const { Router } = require("express");
+const { Router, response } = require("express");
 const secureEndpoints = require("./modules/secureEndpoint");
 const user = require("./modules/user")
 const todo = require("./modules/todo")
+const deletetodo = require("./modules/deleteTodo");
 const gettodo = require ("./modules/gettodo")
 const custormersRouter = require("./modules/gettodo")
 
@@ -56,11 +57,49 @@ server.get("/gettodo", async function(req,res){
     try{
         let response = await db.getTodo();
         res.status(200).json(response).end();
-        console.table(response);
+        console.table(response.rows);
     }catch(error){
         console.error(error)
     }
     
+});
+
+server.post("/del", async function(req, res){
+    
+    /* try{
+        let response = await db.deleteTodo(this.id);
+    }catch(error){
+        console.error(error)
+    } */
+    
+    const newDeletetodo = new deletetodo(req.body.id);
+    
+    await newDeletetodo.delete();
+
+    res.status(200).json(newDeletetodo).end();
+    console.log(req.body);
+    
+    /* const newDeletetodo = new deletetodo(req.body.todo, req.body.listItems);
+    
+    await newDeletetodo.delete();
+
+    res.status(200).json(newDeletetodo).end();
+    console.log(req.body); */
+
+
+    /* try{
+        let response = await db.deleteTodo();
+        res.status(200).json(response).end();
+        console.log(response);
+    }catch(error){
+        console.error(error);   
+    } */
+
+    /* try{db.deleteTodo();
+        console.log("deletet");
+    }catch(error){
+        console.log(error)
+    }  */
 });
 
 

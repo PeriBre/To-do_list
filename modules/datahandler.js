@@ -81,16 +81,36 @@ class StorageHandler {
 
     }
 
-    async deleteTodo(){
+    /* async deleteTodo(id){
         const client = new pg.Client(this.credentials);
         let results = null;
+        let queryString = 'DELETE FROM todo WHERE todo."todo_id" = ' + id;
         try{
             await client.connect();
-            results = await client.query(`DELETE FROM todo WHERE id = $1`)[req.params.id];
+            results = await client.query(queryString);
             client.end();
+            console.log(results);
         }catch(err){
             client.end();
-            console.log(err);
+            console.error(err);
+            results = err;
+        }
+        
+        return results;
+    } */
+
+    async deleteTodo(id, todo, listItems){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        let queryString = 'DELETE FROM todo WHERE todo."todo_id" =' + id; /*todo;+ " and todo.'listItems'=" + listItems*/
+        try{
+            await client.connect();
+            results = await client.query(queryString);
+            client.end();
+            console.log(results);
+        }catch(err){
+            client.end();
+            console.error(err);
             results = err;
         }
         
