@@ -8,13 +8,23 @@
 </head>
 
 <body>
-    <form class="box" method="post">
+
+    <div id="header" class ="header">
+        <h2>To Do</h2>
         <input id="inpTodo" type="text" placeholder="Todo">
         <input id="inpList" type="text" placeholder="List">
         <input type="button" id="submitTask" value="add"></input>
-    </form>
 
-    <a href="todoread.html"><Button>move to todo list</Button></a>
+    </div>
+
+    <hr>
+
+    <div id="todoContainer"></div>
+
+    <p id="outtext"></p>
+    
+
+    <!--<a href="todoread.html"><Button>move to todo list</Button></a>-->
     
    <!--  <table class="table">
         <thead>
@@ -30,10 +40,10 @@
 
     <script>
 
-
+        let todo=document.getElementById("inpTodo");
+        let list=document.getElementById("inpList");
         document.getElementById("submitTask").onclick = function(evt){
-            let todo=document.getElementById("inpTodo");
-            let list=document.getElementById("inpList");
+            
            
 
             let body={
@@ -53,10 +63,75 @@
             fetch("/todo",cfg).then(resp => {
                 console.log(resp.status)
             })
+
+            setTimeout(function(){
+                location.reload();
+            }, 100); 
             
         }
 
+//------------------------------------------------------------------
+
+        let todoContainer = document.getElementById("todoContainer");
+        let outtext = document.getElementById("outtext");
+
+        loadData();
+
+        async function loadData(){
+
+            let cfg = {
+                method: "GET"
+            }
+
+            try{
+                let response = await fetch("/gettodo", cfg);
+                let data = await response.json();
+
+                console.log(data);
+
+                for(let tododata of data.rows){
+                    let div = document.createElement("div");
+                    let html= `
+                        <h2>${tododata.todo}</h2>
+
+                        <ul>
+                        <li>${tododata.listItems}</li>
+                        </ul>
+                        <button id="delBtn">Delete</button>
+                        <hr>
+                    `
+                    div.innerHTML = html;
+                    todoContainer.appendChild(div);
+                    document.getElementById("delBtn").onclick = function(evt){
+                        console.log("you pressed me!!!!");
+                        let body={
+                            todo: todo.value/*,
+                            listItems: tododata.listItems*/
+                        }
+                        
+                        let cfg = {
+                            method:"POST",
+                            headers: {
+                                "content-type": "application/json"
+                            },
+                            body:JSON.stringify(body)
+                        }
+                        
+                        fetch("/del",cfg).then(resp => {
+                            console.log(resp.status)
+                        })
+                    }
+                }
+            }catch(err){
+                outtext.innerHTML = err;
+            }
+        }
+
         
+
+
+
+
 
 
     </script>
