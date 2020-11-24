@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Document</title>
+    <title>Todo</title>
 </head>
 
 <body>
 
     <div id="header" class ="header">
         <h2>To Do</h2>
-        <input id="inpTodo" type="text" placeholder="Todo">
-        <input id="inpList" type="text" placeholder="List">
-        <input type="button" id="submitTask" value="add"></input>
+        <input id="inpTodoTitle" type="text" placeholder="Name">
+        <input id="inpTodoTask" type="text" placeholder="Task">
+        <input id="inpID" type="text" placeholder="ID">
+        <input type="button" id="submitTitle" value="Add Title"></input>
+        <input type="button" id="submitTask" value="Add Task"></input>
     </div>
+    
     <div id="header" class="header">
         <input id="inpDelete" type ="text" placeholder="Delete ID">
         <input type="button" id="delBtn" value="delete">
@@ -28,15 +31,16 @@
     
     <script>
 
-        let todo=document.getElementById("inpTodo");
-        let list=document.getElementById("inpList");
-        document.getElementById("submitTask").onclick = function(evt){
+        let todoTitle=document.getElementById("inpTodoTitle");
+        let todoTask=document.getElementById("inpTodoTask");
+        let tID=document.getElementById("inpID");
+
+        document.getElementById("submitTitle").onclick = function(evt){
             
            
 
             let body={
-                todo : todo.value,
-                listItems : list.value
+                todoTitle : todoTitle.value,
             }
             
 
@@ -48,13 +52,41 @@
                 body:JSON.stringify(body)
             }
             
-            fetch("/todo",cfg).then(resp => {
+            fetch("/todo/title",cfg).then(resp => {
                 console.log(resp.status)
             })
 
             setTimeout(function(){
                 location.reload();
             }, 100); 
+            
+        }
+
+        document.getElementById("submitTask").onclick = function(evt){
+            
+           
+
+            let body={
+                todoTask: todoTask.value,
+                Title_ID_FK: Number(tID.value),
+            }
+            
+
+            let cfg = {
+                method:"POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body)
+            }
+            
+            fetch("/todo/task",cfg).then(resp => {
+                console.log(resp.status)
+            })
+
+            setTimeout(function(){
+                location.reload();
+            }, 100);
             
         }
 
@@ -72,27 +104,46 @@
             }
 
             try{
-                let response = await fetch("/gettodo", cfg);
-                let data = await response.json();
+                    let response = await fetch(("/gettodoTitle"), cfg);
+                    let data = await response.json();
+                    let secondRepsone = await fetch("/gettodo", cfg);
+                    let secondData = await secondRepsone.json();
 
-                console.log(data);
+                    console.log(data);
+                    console.log(secondData.rows);
 
-                for(let tododata of data.rows){
-                    let div = document.createElement("div");
-                    let html= `
-                        <h2>${tododata.todo}</h2>
+                    for(let secondtododata of secondData.rows){
+                        let div = document.createElement("div");
+                        div.classList.add("textStyle")
+                         let html= `
+                            
+                            <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`
+                            
+                        div.innerHTML = html;
+                        todoContainer.appendChild(div);
+                    }
+                
+                   for(let tododata of data.rows){
+                        let list = tododata.array_agg + '';
+                        list = list.split(",");
 
-                        <ul>
-                        <li>${tododata.listItems}</li>
-                        <p>delete id: ${tododata.todo_id}</p>
-                        </ul>
-                    `
-                    div.innerHTML = html;
-                    todoContainer.appendChild(div);     
-            }
-            }catch(err){
-                outtext.innerHTML = err;
-        }}
+
+                        let div = document.createElement("div");
+                        div.classList.add("todoStyle")
+                         let html= `
+                            
+                            <h2>${tododata.Title_Name}</h2>`
+                            
+                        for(let i = 0; i<list.length; i++){
+                            html += `<ul><li>${list[i]}</li></ul>`;
+                        }
+
+                        div.innerHTML = html;
+                        todoContainer.appendChild(div); 
+                }
+                }catch(err){
+                    outtext.innerHTML = err;
+            }}
 
 //-------------------------------------------------------------------------------------------------------
 
@@ -130,5 +181,27 @@
 
 
     </script>
+    <style>
+        
+        .textStyle>p{
+            display: inline;
+        }
+        .textStyle>h3{
+            display: inline;
+        }
+        .textStyle{
+            display:inline-block;
+            margin: 5px;
+            text-align: left;
+        }
+        .todoStyle{
+            float:left;
+            widows: 100px;
+            margin: 10px;
+        }
+        .todoStyle>ul{
+            padding-left:20px;
+        }
+    </style>
 </body>
 </html>

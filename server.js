@@ -12,7 +12,10 @@ const user = require("./modules/user")
 const todo = require("./modules/todo")
 const deletetodo = require("./modules/deleteTodo");
 const loginuser = require("./modules/loginuser");
+const todosimple = require("./modules/todocopy");
+const todotask = require("./modules/todo copy");
 const custormersRouter = require("./modules/gettodo");
+const { copy } = require("./modules/secureEndpoint");
 //const { json } = require("body-parser");
 
 server.set("port", port);
@@ -61,11 +64,31 @@ server.post("/user/auth", async function(req,res){
 
 server.post("/todo", async function(req,res){
 
-    const newTodo = new todo(req.body.todo, req.body.listItems);
+    const newTodo = new todosimple(req.body.todo, req.body.listItems);
 
     await newTodo.create();
 
     res.status(200).json(newTodo).end();
+    console.log(req.body);
+});
+
+server.post("/todo/title", async function(req,res){
+
+    const newTodoTitle = new todo(req.body.todoTitle);
+
+    await newTodoTitle.createTitle();
+
+    res.status(200).json(newTodoTitle).end();
+    console.log(req.body);
+});
+
+server.post("/todo/task", async function(req,res){
+
+    const newTodoTask = new todotask(req.body.todoTask, req.body.Title_ID_FK);
+
+    await newTodoTask.createTask();
+
+    res.status(200).json(newTodoTask).end();
     console.log(req.body);
 });
 
@@ -79,6 +102,18 @@ server.get("/gettodo", async function(req,res){
     }
     
 });
+
+server.get("/gettodoTitle", async function(req,res){
+    try{
+        let response = await db.getTodoTitle();
+        res.status(200).json(response).end();
+        console.table(response.rows);
+    }catch(error){
+        console.error(error)
+    }
+    
+});
+
 
 server.post("/del", async function(req, res){
     

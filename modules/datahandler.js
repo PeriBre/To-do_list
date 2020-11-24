@@ -48,12 +48,44 @@ class StorageHandler {
         return loginresponse;
     }
 
-    async insertTodo(todo, listItems){
+    async insertTodoSimple(todo, listItems){
         const client = new pg.Client(this.credentials);
         let results = null;
         try{
             await client.connect();
-            results = await client.query('INSERT INTO "public"."todo"("todo", "complete", "date_complete", "listItems") VALUES($1, $2, $3, $4) RETURNING *;', [todo, 0, date, listItems]);
+            results = await client.query('INSERT INTO "public"."todo"("todo", "listItems") VALUES($1, $2) RETURNING *;', [todo, listItems]);
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+    
+        return results;
+    }
+
+    async insertTodoTitle(todoTitle){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('INSERT INTO "public"."TodoTitle"("Title_Name") VALUES($1) RETURNING *;', [todoTitle]);
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+    
+        return results;
+    }
+
+    async insertTodoTask(todoTask, Title_ID_FK){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('INSERT INTO "public"."TodoTask"("Task", "Title_ID_FK") VALUES($1, $2) RETURNING *;', [todoTask, Title_ID_FK]);
             client.end();
         }catch(err){
             client.end();
@@ -69,7 +101,7 @@ class StorageHandler {
         let results = null;
         try{
             await client.connect();
-            results = await client.query('SELECT "todo_id", "todo", "listItems" FROM todo');
+            results = await client.query('SELECT "Title_Name", "Title_ID" FROM "public"."TodoTitle"');
             client.end();
         }catch(err){
             client.end();
@@ -80,6 +112,25 @@ class StorageHandler {
         return results;
 
     }
+
+    async getTodoTitle(){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('SELECT "TodoTitle"."Title_Name", "TodoTask"."Title_ID_FK", array_agg("TodoTitle"."Title_ID"), array_agg("TodoTask"."Task") FROM "public"."TodoTitle", "public"."TodoTask"  WHERE "TodoTitle"."Title_ID" = "TodoTask"."Title_ID_FK" GROUP BY "TodoTitle"."Title_ID", "TodoTask"."Title_ID_FK"');
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+        
+        return results;
+
+    }
+
+
 
  /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);

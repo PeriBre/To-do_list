@@ -1,20 +1,11 @@
 const database = require("./datahandler");
 
-class Todo{
+class Todotask{
 
-    constructor(todoTitle, todoTask, Title_ID_FK){
-        this.todoTitle = todoTitle;
+    constructor(todoTask, Title_ID_FK){
         this.todoTask = todoTask;
         this.Title_ID_FK = Title_ID_FK;
         this.valid = false;
-    }
-
-    async createTitle(){
-        try{
-            let response = await database.insertTodoTitle(this.todoTitle);
-        }catch(error){
-            console.error(error)
-        }
     }
     async createTask(){
         try{
@@ -25,4 +16,4 @@ class Todo{
     }
 }
 
-module.exports = Todo
+module.exports = Todotask
