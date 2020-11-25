@@ -29,6 +29,22 @@ class StorageHandler {
         return results;
     }
 
+    async deleteUser(username, password){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('DELETE FROM "public"."users" WHERE username = $1 and password = $2 RETURNING *;', [username, password]);
+            client.end();
+        }catch(err){
+            client.end();
+            console.log(err);
+            results = err;
+        }
+    
+        return results;
+    }
+
     async insertLogin(username, password){
         const client = new pg.Client(this.credentials);
         let loginresponse = null;
@@ -149,13 +165,30 @@ class StorageHandler {
 
     } */
 
-    async deleteTodo(id, todo, listItems){
+    async deleteTodo(id){
         const client = new pg.Client(this.credentials);
         let results = null;
-        let queryString = 'DELETE FROM todo WHERE todo."todo_id" =' + id; /*todo;+ " and todo.'listItems'=" + listItems*/
         try{
             await client.connect();
-            results = await client.query(queryString);
+            results = await client.query('DELETE FROM "public"."TodoTask" WHERE "Title_ID_FK" = $1 ',[id]);
+            secondresults = await client.query('DELETE FROM "public"."TodoTitle" WHERE "Title_ID" = $1 ',[id]);
+            client.end();
+            console.log(results + secondresults);
+        }catch(err){
+            client.end();
+            console.error(err);
+            results = err;
+        }
+        
+        return results;
+    }
+
+    async deleteTask(id, todoTask){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('DELETE FROM "public"."TodoTask" WHERE "Task" = $1 and "Title_ID_FK" = $2 RETURNING *;', [todoTask, id]);
             client.end();
             console.log(results);
         }catch(err){

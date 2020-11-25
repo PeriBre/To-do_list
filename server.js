@@ -62,6 +62,13 @@ server.post("/user/auth", async function(req,res){
     
 });
 
+server.delete("/user/delete", async function(req, res){
+    const newDeleteUser = new user(req.body.username, req.body.password);
+    await newDeleteUser.delUser();
+    res.status(200).json(newDeleteUser).end();
+    console.log(req.body);
+})
+
 server.post("/todo", async function(req,res){
 
     const newTodo = new todosimple(req.body.todo, req.body.listItems);
@@ -114,8 +121,16 @@ server.get("/gettodoTitle", async function(req,res){
     
 });
 
+server.delete("/deletetask", async function(req, res){
 
-server.post("/del", async function(req, res){
+    const newDeleteTask = new deletetodo(req.body.id, req.body.todoTask);
+    await newDeleteTask.delTask();
+    res.status(200).json(newDeleteTask).end();
+    console.log(req.body);
+});
+
+
+server.delete("/del", async function(req, res){
     
     /* try{
         let response = await db.deleteTodo(this.id);

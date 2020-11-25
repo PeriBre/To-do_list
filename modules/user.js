@@ -22,6 +22,14 @@ class User{
         }
     }
 
+    async delUser(){
+        try{
+            let response = await database.deleteUser(this.username,this.password);
+        }catch(error){
+            console.error(error)
+        }
+    }
+
 }
 
 module.exports = User

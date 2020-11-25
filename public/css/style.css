@@ -4,10 +4,11 @@ body{
     padding: 0;
     font-family: sans-serif;
     background: rgb(9,9,121);
-    background: -webkit-linear-gradient(-90deg, rgba(0,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-    background: -o-linear-gradient(-90deg, rgba(0,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-    background: -moz-linear-gradient(-90deg, rgba(0,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-    background: linear-gradient(-90deg, rgba(0,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+    background: -webkit-linear-gradient(-70deg, rgb(52, 3, 73) 0%, rgb(122, 17, 148) 35%, rgba(0,212,255,1) 100%);
+    background: -o-linear-gradient(-70deg, rgb(52, 3, 73) 0%, rgba(122, 17, 148) 35%, rgba(0,212,255,1) 100%);
+    background: -moz-linear-gradient(-70deg, rgb(52, 3, 73) 0%, rgba(122, 17, 148) 35%, rgba(0,212,255,1) 100%);
+    background: linear-gradient(-70deg, rgb(52, 3, 73) 0%, rgba(122, 17, 148) 35%, rgba(0,212,255,1) 100%);
+    text-shadow: 1px 1px 2px grey;
 }
 
 #createUser, #loginUser{
@@ -91,4 +92,29 @@ body{
     background: #2ecc71;
 }
 
-
+.textStyle>p{
+    text-align: left;
+    display: inline;
+}
+.textStyle>h3{
+    text-align: left;
+    display: inline;
+}
+.textStyle{
+    text-align: left;
+    display: inline-block;
+    margin: 5px;
+    text-align: left;
+    position: relative;
+}
+.todoStyle{
+    float: left;
+    padding-right: 30px;
+    border: solid 1px black;
+    transform: translateY(50px);
+    margin-left: 15px;
+    border-radius: 10px;
+}
+.todoStyle>ul{
+    padding-left:20px;
+}

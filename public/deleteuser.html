@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Welcome</title>
+</head>
+<body>
+    <!-- //createUser -->
+    <form class="box" method="post">
+        <h1>WELCOME</h1>
+        <hr>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <input type="button" value="Delete User" id="deleteUser">
+        <p id="txt"></p>
+    </form>   
+
+    <script>
+        let usernameInput = document.getElementById("username");
+        let passwordInput = document.getElementById("password");
+        let warningTxt = document.getElementById("txt")
+
+        document.getElementById("deleteUser").onclick = function(evt){
+
+            let body = {
+                username:usernameInput.value,
+                password:passwordInput.value
+            }
+            let cfg ={
+                method:"DELETE",
+                headers:{
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body)
+            }
+
+           fetch("/user/delete",cfg).then(resp => {
+               console.log(resp.status);
+           })
+        }
+    </script>
+</body>
+</html>

@@ -11,17 +11,24 @@
 
     <div id="header" class ="header">
         <h2>To Do</h2>
-        <input id="inpTodoTitle" type="text" placeholder="Name">
-        <input id="inpTodoTask" type="text" placeholder="Task">
-        <input id="inpID" type="text" placeholder="ID">
+        <input id="inpTodoTitle" type="text" placeholder="Title">
         <input type="button" id="submitTitle" value="Add Title"></input>
-        <input type="button" id="submitTask" value="Add Task"></input>
     </div>
     
+    <div id="header" class ="header">
+        <input id="inpTodoTask" type="text" placeholder="Task">
+        <input id="inpID" type="text" placeholder="ID">
+        <input type="button" id="submitTask" value="Add Task"></input>
+    </div>
+
     <div id="header" class="header">
         <input id="inpDelete" type ="text" placeholder="Delete ID">
-        <input type="button" id="delBtn" value="delete">
+        <input type="button" id="delBtn" value="delete list">
+        <input type="button" id="delTaskBtn" value="delete task">
     </div>
+
+    <p>For å slette en hel liste: Skriv ID i delete id og trykk delete list</p>
+    <P>For å slette en task: Skriv Task i Task og ID i delete id og trykk delete task</P>
 
     <hr>
 
@@ -130,8 +137,7 @@
 
                         let div = document.createElement("div");
                         div.classList.add("todoStyle")
-                         let html= `
-                            
+                         let html= ` 
                             <h2>${tododata.Title_Name}</h2>`
                             
                         for(let i = 0; i<list.length; i++){
@@ -140,7 +146,7 @@
 
                         div.innerHTML = html;
                         todoContainer.appendChild(div); 
-                }
+                    }
                 }catch(err){
                     outtext.innerHTML = err;
             }}
@@ -157,7 +163,7 @@
                         }
                         
                         let cfg = {
-                            method:"POST",
+                            method:"DELETE",
                             headers: {
                                 "content-type": "application/json"
                             },
@@ -173,35 +179,28 @@
                         }, 100)
                     }
 
-        
+        document.getElementById("delTaskBtn").onclick = function(evt){
+            let body={
+                id : deleteId.value,
+                todoTask : todoTask.value
+            }
 
+            let cfg = {
+                            method:"DELETE",
+                            headers: {
+                                "content-type": "application/json"
+                            },
+                            body:JSON.stringify(body)
+                        }
 
-
-
-
+                        fetch("/deletetask",cfg).then(resp => {
+                            console.log(resp.status)
+                        });
+                        setTimeout(function(){
+                            location.reload();
+                        }, 100)
+        }
 
     </script>
-    <style>
-        
-        .textStyle>p{
-            display: inline;
-        }
-        .textStyle>h3{
-            display: inline;
-        }
-        .textStyle{
-            display:inline-block;
-            margin: 5px;
-            text-align: left;
-        }
-        .todoStyle{
-            float:left;
-            widows: 100px;
-            margin: 10px;
-        }
-        .todoStyle>ul{
-            padding-left:20px;
-        }
-    </style>
 </body>
 </html>
