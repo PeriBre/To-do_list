@@ -96,7 +96,7 @@ body{
     text-align: left;
     display: inline;
 }
-.textStyle>h3{
+.textStyle h3{
     text-align: left;
     display: inline;
 }
@@ -115,6 +115,10 @@ body{
     margin-left: 15px;
     border-radius: 10px;
 }
-.todoStyle>ul{
+.todoStyle ul{
     padding-left:20px;
+}
+
+.header p{
+    display: inline;
 }

@@ -146,8 +146,6 @@ class StorageHandler {
 
     }
 
-
-
  /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);
         let results = null;
@@ -199,21 +197,6 @@ class StorageHandler {
         
         return results;
     }
-    /*async insert(...params){
-        const client = new pg.Client(this.credentials);
-        let results = null;
-        try{
-            await client.connect();
-            results = await client.query('INSERT INTO "public"."$1"("username", "password") VALUES("$2", "$3") RETURNING *;', params);
-            results = results.row[0].message;
-            client.end();
-        }catch(err){
-            client.end();
-            results = err;
-        }
-    
-        return results;
-    }*/
 }
 
 
