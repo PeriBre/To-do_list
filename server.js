@@ -14,8 +14,11 @@ const deletetodo = require("./modules/deleteTodo");
 const loginuser = require("./modules/loginuser");
 const todosimple = require("./modules/todocopy");
 const todotask = require("./modules/todo copy");
+const uptodotitle = require("./modules/updatetodo");
 const custormersRouter = require("./modules/gettodo");
 const { copy } = require("./modules/secureEndpoint");
+const { updateTitle } = require("./modules/datahandler");
+const Uptodotitle = require("./modules/updatetodo");
 //const { json } = require("body-parser");
 
 server.set("port", port);
@@ -79,6 +82,13 @@ server.post("/todo/title", async function(req,res){
     console.log(req.body);
 });
 
+server.put("/todo/title/update", async function(req,res){
+    const newUpTodoTitle = new uptodotitle(req.body.Title_Name, req.body.UpTitle_Name);
+    await newUpTodoTitle.updTitle();
+    res.status(200).json(newUpTodoTitle).end();
+    console.log(req.body);
+})
+
 server.post("/todo/task", async function(req,res){
 
     const newTodoTask = new todotask(req.body.todoTask, req.body.Title_ID_FK);
@@ -110,6 +120,8 @@ server.get("/gettodoTitle", async function(req,res){
     }
     
 });
+
+
 
 server.delete("/deletetask", async function(req, res){
 

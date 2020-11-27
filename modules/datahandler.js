@@ -146,6 +146,21 @@ class StorageHandler {
 
     }
 
+    async upTitle(Title_Name, upTitle_Name){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('UPDATE "TodoTitle" SET "Title_Name" = $1 WHERE "Title_Name" = $2',[upTitle_Name, Title_Name]);
+            client.end()
+        }catch(err){
+            client.end()
+            console.log(err);
+            results = err;
+        }
+        return results;
+    }
+
  /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);
         let results = null;

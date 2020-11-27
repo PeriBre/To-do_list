@@ -10,22 +10,12 @@
 <body>
 
     <div id="header" class ="header">
-        <h2>To Do</h2>
+        <h2>Update To Do</h2>
         <input id="inpTodoTitle" type="text" placeholder="Title">
-        <input type="button" id="submitTitle" value="Add Title"></input>
-        <p>For å legge til tittel, skriv inn og trykk på knapp</p>
+        <input id="inpNewTodoTitle" type="text" placeholder="New Title">
+        <input type="button" id="updateTitle" value="Add Title"></input>
     </div>
     
-    <div id="header" class ="header">
-        <input id="inpTodoTask" type="text" placeholder="Task">
-    </div>
-
-    <div id="header" class="header">
-        <input id="inpID" type="text" placeholder="ID">
-        <input type="button" id="submitTask" value="Add Task"></input>
-        <p>For å legge til task, skriv inn task, og id som blir generert til tittel og trykk på knapp</p>
-    </div>
-
     <hr>
 
     <div id="todoContainer"></div>
@@ -34,63 +24,31 @@
     
     <script>
 
-        let todoTitle=document.getElementById("inpTodoTitle");
-        let todoTask=document.getElementById("inpTodoTask");
-        let tID=document.getElementById("inpID");
+        let titleInp = document.getElementById("inpTodoTitle");
+        let upTitleInp = document.getElementById("inpNewTodoTitle");
+        
+        document.getElementById("updateTitle").onclick = function(evt){
 
-        document.getElementById("submitTitle").onclick = function(evt){
-            
-           
-
-            let body={
-                todoTitle : todoTitle.value,
+            let body = {
+                Title_Name : titleInp.value,
+                UpTitle_Name: upTitleInp.value
             }
-            
 
-            let cfg = {
-                method:"POST",
+            let cfg ={
+                method: "PUT",
                 headers: {
                     "content-type": "application/json"
                 },
                 body:JSON.stringify(body)
             }
-            
-            fetch("/todo/title",cfg).then(resp => {
-                console.log(resp.status)
-            })
 
-            setTimeout(function(){
-                location.reload();
-            }, 100); 
-            
-        }
-
-        document.getElementById("submitTask").onclick = function(evt){
-            
-           
-
-            let body={
-                todoTask: todoTask.value,
-                Title_ID_FK: Number(tID.value),
-            }
-            
-
-            let cfg = {
-                method:"POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body:JSON.stringify(body)
-            }
-            
-            fetch("/todo/task",cfg).then(resp => {
+            fetch("/todo/title/update",cfg).then(resp => {
                 console.log(resp.status)
             })
 
             setTimeout(function(){
                 location.reload();
             }, 100);
-            
         }
 
 //------------------------------------------------------------------
