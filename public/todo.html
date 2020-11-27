@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <title>Todo</title>
 </head>
@@ -11,6 +13,7 @@
 
     <div id="header" class ="header">
         <h2>To Do</h2>
+        <a class="DelButton" type="button" href="deletetodo.html"><i class="fa fa-trash"></i></a>
         <input id="inpTodoTitle" type="text" placeholder="Title">
         <input type="button" id="submitTitle" value="Add Title"></input>
         <p>For å legge til tittel, skriv inn og trykk på knapp</p>
@@ -25,6 +28,8 @@
         <input type="button" id="submitTask" value="Add Task"></input>
         <p>For å legge til task, skriv inn task, og id som blir generert til tittel og trykk på knapp</p>
     </div>
+
+    
 
     <hr>
 
@@ -144,6 +149,8 @@
                 }catch(err){
                     outtext.innerHTML = err;
             }}
+
+
 
 
     </script>

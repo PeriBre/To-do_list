@@ -161,6 +161,21 @@ class StorageHandler {
         return results;
     }
 
+    async upTask(Task, upTask, Title_ID_FK){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('UPDATE "TodoTask" SET "Task" = $1 WHERE "Task" = $2 and "Title_ID_FK" = $3',[upTask, Task, Title_ID_FK]);
+            client.end()
+        }catch(err){
+            client.end()
+            console.log(err);
+            results = err;
+        }
+        return results;
+    }
+
  /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);
         let results = null;

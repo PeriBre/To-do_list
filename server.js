@@ -15,6 +15,7 @@ const loginuser = require("./modules/loginuser");
 const todosimple = require("./modules/todocopy");
 const todotask = require("./modules/todo copy");
 const uptodotitle = require("./modules/updatetodo");
+const uptodotask = require("./modules/updatetask")
 const custormersRouter = require("./modules/gettodo");
 const { copy } = require("./modules/secureEndpoint");
 const { updateTitle } = require("./modules/datahandler");
@@ -83,9 +84,16 @@ server.post("/todo/title", async function(req,res){
 });
 
 server.put("/todo/title/update", async function(req,res){
-    const newUpTodoTitle = new uptodotitle(req.body.Title_Name, req.body.UpTitle_Name);
+    const newUpTodoTitle = new uptodotitle(req.body.Title_Name, req.body.upTitle_Name);
     await newUpTodoTitle.updTitle();
     res.status(200).json(newUpTodoTitle).end();
+    console.log(req.body);
+})
+
+server.put("/todo/task/update", async function(req,res){
+    const newUpTodoTask = new uptodotask(req.body.Task, req.body.upTask, req.body.Title_ID_FK);
+    await newUpTodoTask.updTask();
+    res.status(200).json(newUpTodoTask).end();
     console.log(req.body);
 })
 

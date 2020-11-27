@@ -15,6 +15,7 @@ class Uptodotitle{
             console.error(error)
         }
     }
+
 }
 
 module.exports = Uptodotitle
