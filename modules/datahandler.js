@@ -176,6 +176,21 @@ class StorageHandler {
         return results;
     }
 
+    async upUserPass(username, upusername, password){
+        const client = new pg.Client(this.credentials);
+        let results = null;
+        try{
+            await client.connect();
+            results = await client.query('UPDATE "users" SET "password" = $1 WHERE "username" = $2 and "password" = $3',[upusername,username, password]);
+            client.end()
+        }catch(err){
+            client.end()
+            console.log(err);
+            results = err;
+        }
+        return results;
+    }
+
  /*    async updateTodo(title, description){
         const client = new pg.Client(this.credentials);
         let results = null;

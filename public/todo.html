@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/style.css">
     <title>Todo</title>
@@ -11,9 +10,14 @@
 
 <body>
 
+    <div class ="buttonheader" id="buttons">
+        <a type="button" href="deletetodo.html"><i class="fa fa-trash"></i></a>
+        <a type="button" href="updatetodo.html"><i class="fa fa-edit"></i></a>
+        <a type="button" href="deleteuser.html"><i class="fa fa-user"></i></a>
+    </div>
+
     <div id="header" class ="header">
         <h2>To Do</h2>
-        <a class="DelButton" type="button" href="deletetodo.html"><i class="fa fa-trash"></i></a>
         <input id="inpTodoTitle" type="text" placeholder="Title">
         <input type="button" id="submitTitle" value="Add Title"></input>
         <p>For å legge til tittel, skriv inn og trykk på knapp</p>
@@ -42,20 +46,27 @@
         let todoTitle=document.getElementById("inpTodoTitle");
         let todoTask=document.getElementById("inpTodoTask");
         let tID=document.getElementById("inpID");
+        let outtext = document.getElementById("outtext");
+        let loginDataJson = localStorage.getItem("logindata");
+        let logindata = JSON.parse(loginDataJson);
+        let emptyStorage = localStorage.length;
+
+
+        if(emptyStorage == 0 || !logindata.loginUser){
+            outtext.innerHTML = "Not allowed"
+        }
 
         document.getElementById("submitTitle").onclick = function(evt){
             
-           
-
             let body={
                 todoTitle : todoTitle.value,
             }
-            
 
             let cfg = {
                 method:"POST",
                 headers: {
-                    "content-type": "application/json"
+                    "content-type": "application/json",
+                    "authorization": logindata.loginUser.isValid
                 },
                 body:JSON.stringify(body)
             }
@@ -72,18 +83,16 @@
 
         document.getElementById("submitTask").onclick = function(evt){
             
-           
-
             let body={
                 todoTask: todoTask.value,
                 Title_ID_FK: Number(tID.value),
             }
             
-
             let cfg = {
                 method:"POST",
                 headers: {
-                    "content-type": "application/json"
+                    "content-type": "application/json",
+                    "authorization": logindata.loginUser.isValid
                 },
                 body:JSON.stringify(body)
             }
@@ -101,14 +110,14 @@
 //------------------------------------------------------------------
 
         let todoContainer = document.getElementById("todoContainer");
-        let outtext = document.getElementById("outtext");
-
+        
         loadData();
 
         async function loadData(){
 
             let cfg = {
-                method: "GET"
+                method: "GET",
+                headers: {"authorization": logindata.loginUser.isValid}
             }
 
             try{
@@ -149,9 +158,6 @@
                 }catch(err){
                     outtext.innerHTML = err;
             }}
-
-
-
 
     </script>
 </body>

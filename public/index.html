@@ -71,7 +71,6 @@
 
                 localStorage.setItem("logindata", JSON.stringify(data));
 
-
                 if(!data.loginUser){
                     warningTxt.innerHTML = "Denne brukeren eksisterer ikke";
                     return;
@@ -81,10 +80,6 @@
             }catch(err){
                 warningTxt.innerHTML = err;
             }
-
-            /* fetch("/user",cfg).then(resp => {
-            console.log(resp.status);
-            }) */
         }
     </script>
 </body>

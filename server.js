@@ -15,11 +15,13 @@ const loginuser = require("./modules/loginuser");
 const todosimple = require("./modules/todocopy");
 const todotask = require("./modules/todo copy");
 const uptodotitle = require("./modules/updatetodo");
-const uptodotask = require("./modules/updatetask")
+const uptodotask = require("./modules/updatetask");
+const upuserpass = require("./modules/updateuser");
 const custormersRouter = require("./modules/gettodo");
 const { copy } = require("./modules/secureEndpoint");
 const { updateTitle } = require("./modules/datahandler");
 const Uptodotitle = require("./modules/updatetodo");
+const Upuserpass = require("./modules/updateuser");
 //const { json } = require("body-parser");
 
 server.set("port", port);
@@ -46,10 +48,12 @@ server.post("/user/auth", async function(req,res){
     await newLogin.login();
     
     try{
-        if(newLogin.isValid){res.status(200).json({"loginUser": newLogin}).end();
+        if(newLogin.isValid){
+        res.status(200).json({"loginUser": newLogin}).end();
         console.log(newLogin);
         }else{res.status(403).json("Forbidden").end();
-            return}
+            return;
+        }
     }catch(error){
         console.error(error)
     }
@@ -61,7 +65,8 @@ server.delete("/user/delete", async function(req, res){
     await newDeleteUser.delUser();
     res.status(200).json(newDeleteUser).end();
     console.log(req.body);
-})
+});
+
 
 server.post("/todo", async function(req,res){
 
@@ -88,6 +93,14 @@ server.put("/todo/title/update", async function(req,res){
     await newUpTodoTitle.updTitle();
     res.status(200).json(newUpTodoTitle).end();
     console.log(req.body);
+});
+
+server.put("/updateuser", async function(req,res){
+    const newUpUser = new user(req.body.uppassword, req.body.username, req.body.password);
+    await newUpUser.updUserPass();
+    console.log("hallo");
+    res.status(200).json(newUpUser).end();
+    console.log(req.body);
 })
 
 server.put("/todo/task/update", async function(req,res){
@@ -95,7 +108,7 @@ server.put("/todo/task/update", async function(req,res){
     await newUpTodoTask.updTask();
     res.status(200).json(newUpTodoTask).end();
     console.log(req.body);
-})
+});
 
 server.post("/todo/task", async function(req,res){
 

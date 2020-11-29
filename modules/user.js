@@ -6,11 +6,14 @@ const secret = process.env.hashSecret || require("../localenv").hashSecret;
 
 class User{
 
-    constructor(username, password){
+    constructor(username, password/* , uppassword */){
         this.username = username;
         this.password = crypto.createHmac("sha256", secret)
             .update(password)
             .digest("hex");
+        /* this.uppassword = crypto.createHmac("sha256", secret)
+            .update(uppassword)
+            .digest("hex"); */
         this.valid = false
     }
 
@@ -29,6 +32,14 @@ class User{
             console.error(error)
         }
     }
+
+    /* async updUserPass(){
+        try{
+            let response = await database.upUserPass(this.uppassword, this.username, this.password);
+        }catch(error){
+            console.error(error)
+        }
+    } */
 
 }
 

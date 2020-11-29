@@ -3,9 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Welcome</title>
 </head>
 <body>
+    <!-- //updateUser -->
+    <h1>Update User</h1>
+    <form class="Oldbox">
+        <h1>Old Userinfo</h1>
+        <hr>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <p id="txt"></p>
+    </form> 
     
+    <form class="Updatebox">
+        <h1>New Password</h1>
+        <hr>
+        <input type="text" placeholder="Password" id="uppassword">
+        <input type="button" value="Update User" id="updateUser">
+        <p id="txt"></p>
+    </form>
+
+    <script>
+        let usernameInput = document.getElementById("username");
+        let passwordInput = document.getElementById("password");
+        let uppasswordInput = document.getElementById("uppassword");
+        let warningTxt = document.getElementById("txt");
+
+        document.getElementById("updateUser").onclick = function(evt){
+
+            let body = {
+                uppassword : uppasswordInput.value,
+                username: username.value,
+                password: passwordInput.value
+            }
+
+            let cfg ={
+                method: "PUT",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body:JSON.stringify(body)
+            }
+
+            fetch("/updateuser",cfg).then(resp => {
+                console.log(resp.status)
+            })
+        }
+    </script>
 </body>
 </html>

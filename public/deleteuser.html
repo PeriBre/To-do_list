@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Welcome</title>
+    <title>Delete User</title>
 </head>
 <body>
+
+    <div class ="buttonheader" id="buttons">
+        <a type="button" href="todo.html"><i class="fa fa-home"></i></a>
+        <a type="button" href="updatetodo.html"><i class="fa fa-edit"></i></a>
+        <a type="button" href="deletetodo.html"><i class="fa fa-trash"></i></a>
+    </div>
+
     <!-- //createUser -->
     <form class="box" method="post">
         <h1>WELCOME</h1>
@@ -21,6 +29,7 @@
         let usernameInput = document.getElementById("username");
         let passwordInput = document.getElementById("password");
         let warningTxt = document.getElementById("txt")
+
 
         document.getElementById("deleteUser").onclick = function(evt){
 
@@ -37,6 +46,7 @@
             }
 
            fetch("/user/delete",cfg).then(resp => {
+               localStorage.removeItem("logindata")
                console.log(resp.status);
            })
         }
