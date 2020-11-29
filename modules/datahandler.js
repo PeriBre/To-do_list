@@ -191,32 +191,15 @@ class StorageHandler {
         return results;
     }
 
- /*    async updateTodo(title, description){
-        const client = new pg.Client(this.credentials);
-        let results = null;
-        try{
-            await client.connect();
-            results = await client.query(`UPDATE todo SET title = $1, description = $2 WHERE id = $3`)[title, description, req.params.id];
-            client.end();
-        }catch(err){
-            client.end();
-            console.log(err);
-            results = err;
-        }
-        
-        return results;
-
-    } */
-
     async deleteTodo(id){
         const client = new pg.Client(this.credentials);
         let results = null;
+        let secondresults = null;
         try{
             await client.connect();
             results = await client.query('DELETE FROM "public"."TodoTask" WHERE "Title_ID_FK" = $1 ',[id]);
             secondresults = await client.query('DELETE FROM "public"."TodoTitle" WHERE "Title_ID" = $1 ',[id]);
             client.end();
-            console.log(results + secondresults);
         }catch(err){
             client.end();
             console.error(err);

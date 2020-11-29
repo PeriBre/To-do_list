@@ -6,33 +6,20 @@ const port = (process.env.PORT || 8080);
 
 const db = require("./modules/datahandler");
 
-//const { Router, response } = require("express");
-const secureEndpoints = require("./modules/secureEndpoint");
 const user = require("./modules/user")
 const todo = require("./modules/todo")
 const deletetodo = require("./modules/deleteTodo");
 const loginuser = require("./modules/loginuser");
-const todosimple = require("./modules/todocopy");
-const todotask = require("./modules/todo copy");
+const todotask = require("./modules/todotask");
 const uptodotitle = require("./modules/updatetodo");
 const uptodotask = require("./modules/updatetask");
 const upuserpass = require("./modules/updateuser");
-const custormersRouter = require("./modules/gettodo");
-const { copy } = require("./modules/secureEndpoint");
-const { updateTitle } = require("./modules/datahandler");
-const Uptodotitle = require("./modules/updatetodo");
-const Upuserpass = require("./modules/updateuser");
-//const { json } = require("body-parser");
 
 server.set("port", port);
 server.use(express.static("public"));
 server.use(bodyParser.json());
 
-server.use("/todoitems", custormersRouter);
-
-server.use("/secure", secureEndpoints);
-
-server.post("/user", async function(req,res){
+server.post("/user/create", async function(req,res){
 
     const newUser = new user(req.body.username, req.body.password);
 
@@ -60,6 +47,14 @@ server.post("/user/auth", async function(req,res){
     
 });
 
+server.put("/updateuser", async function(req,res){
+    const newUpUser = new upuserpass(req.body.uppassword, req.body.username, req.body.password);
+    await newUpUser.updUsersPass();
+    console.log("hallo");
+    res.status(200).json(newUpUser).end();
+    console.log(req.body);
+});
+
 server.delete("/user/delete", async function(req, res){
     const newDeleteUser = new user(req.body.username, req.body.password);
     await newDeleteUser.delUser();
@@ -67,16 +62,6 @@ server.delete("/user/delete", async function(req, res){
     console.log(req.body);
 });
 
-
-server.post("/todo", async function(req,res){
-
-    const newTodo = new todosimple(req.body.todo, req.body.listItems);
-
-    await newTodo.create();
-
-    res.status(200).json(newTodo).end();
-    console.log(req.body);
-});
 
 server.post("/todo/title", async function(req,res){
 
@@ -95,21 +80,6 @@ server.put("/todo/title/update", async function(req,res){
     console.log(req.body);
 });
 
-server.put("/updateuser", async function(req,res){
-    const newUpUser = new user(req.body.uppassword, req.body.username, req.body.password);
-    await newUpUser.updUserPass();
-    console.log("hallo");
-    res.status(200).json(newUpUser).end();
-    console.log(req.body);
-})
-
-server.put("/todo/task/update", async function(req,res){
-    const newUpTodoTask = new uptodotask(req.body.Task, req.body.upTask, req.body.Title_ID_FK);
-    await newUpTodoTask.updTask();
-    res.status(200).json(newUpTodoTask).end();
-    console.log(req.body);
-});
-
 server.post("/todo/task", async function(req,res){
 
     const newTodoTask = new todotask(req.body.todoTask, req.body.Title_ID_FK);
@@ -119,6 +89,14 @@ server.post("/todo/task", async function(req,res){
     res.status(200).json(newTodoTask).end();
     console.log(req.body);
 });
+
+server.put("/todo/task/update", async function(req,res){
+    const newUpTodoTask = new uptodotask(req.body.Task, req.body.upTask, req.body.Title_ID_FK);
+    await newUpTodoTask.updTask();
+    res.status(200).json(newUpTodoTask).end();
+    console.log(req.body);
+});
+
 
 server.get("/gettodo", async function(req,res){
     try{
@@ -142,8 +120,6 @@ server.get("/gettodoTitle", async function(req,res){
     
 });
 
-
-
 server.delete("/deletetask", async function(req, res){
 
     const newDeleteTask = new deletetodo(req.body.id, req.body.todoTask);
@@ -152,14 +128,7 @@ server.delete("/deletetask", async function(req, res){
     console.log(req.body);
 });
 
-
 server.delete("/del", async function(req, res){
-    
-    /* try{
-        let response = await db.deleteTodo(this.id);
-    }catch(error){
-        console.error(error)
-    } */
     
     const newDeletetodo = new deletetodo(req.body.id);
     
@@ -168,36 +137,7 @@ server.delete("/del", async function(req, res){
     res.status(200).json(newDeletetodo).end();
     console.log(req.body);
     
-    /* const newDeletetodo = new deletetodo(req.body.todo, req.body.listItems);
-    
-    await newDeletetodo.delete();
-
-    res.status(200).json(newDeletetodo).end();
-    console.log(req.body); */
-
-
-    /* try{
-        let response = await db.deleteTodo();
-        res.status(200).json(response).end();
-        console.log(response);
-    }catch(error){
-        console.error(error);   
-    } */
-
-    /* try{db.deleteTodo();
-        console.log("deletet");
-    }catch(error){
-        console.log(error)
-    }  */
 });
-
-
-/*server.get("/start", authenticator, (req,res,next) =>{
-    
-        res.send("banananana").end();
-
-    
-});*/
 
 server.listen(server.get("port"), function(){
     console.log("server running", server.get("port"));

@@ -5,7 +5,6 @@ class Todotask{
     constructor(todoTask, Title_ID_FK){
         this.todoTask = todoTask;
         this.Title_ID_FK = Title_ID_FK;
-        this.valid = false;
     }
     async createTask(){
         try{

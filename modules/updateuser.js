@@ -13,7 +13,6 @@ class Upuserpass{
         this.uppassword = crypto.createHmac("sha256", secret)
             .update(uppassword)
             .digest("hex");
-        this.valid = false
     }
 
 

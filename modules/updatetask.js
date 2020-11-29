@@ -6,7 +6,6 @@ class Uptodotask{
         this.Task = Task;
         this.upTask = upTask;
         this.Title_ID_FK = Title_ID_FK;
-        this.valid = false;
     }
 
     async updTask(){

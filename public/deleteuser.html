@@ -15,9 +15,8 @@
         <a type="button" href="deletetodo.html"><i class="fa fa-trash"></i></a>
     </div>
 
-    <!-- //createUser -->
     <form class="box" method="post">
-        <h1>WELCOME</h1>
+        <h1>Delete User</h1>
         <hr>
         <input type="text" placeholder="Username" id="username">
         <input type="password" placeholder="Password" id="password">
@@ -47,6 +46,7 @@
 
            fetch("/user/delete",cfg).then(resp => {
                localStorage.removeItem("logindata")
+               location.href="index.html"
                console.log(resp.status);
            })
         }

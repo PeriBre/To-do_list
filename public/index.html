@@ -7,7 +7,7 @@
     <title>Welcome</title>
 </head>
 <body>
-    <!-- //createUser -->
+    <!--createUser -->
     <form class="box" method="post">
         <h1>WELCOME</h1>
         <hr>
@@ -44,9 +44,7 @@
                 body:JSON.stringify(body)
             }
 
-           fetch("/user",cfg).then(resp => {
-               console.log(resp.status);
-           })
+           fetch("/user/create",cfg);
         }
 
         document.getElementById("loginUser").onclick = async function(evt,err){

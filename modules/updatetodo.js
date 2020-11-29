@@ -1,11 +1,10 @@
 const database = require("./datahandler");
 
-class Uptodotitle{
+class Updatetodo{
 
     constructor(Title_Name, upTitle_Name){
         this.Title_Name = Title_Name;
         this.upTitle_Name = upTitle_Name;
-        this.valid = false;
     }
 
     async updTitle(){
@@ -16,6 +15,7 @@ class Uptodotitle{
         }
     }
 
+
 }
 
-module.exports = Uptodotitle
+module.exports = Updatetodo

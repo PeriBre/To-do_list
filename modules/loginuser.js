@@ -9,7 +9,6 @@ class Loginuser{
         this.password = crypto.createHmac("sha256", secret)
             .update(password)
             .digest("hex");
-        this.valid = false
     }
 
     async login(){

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Todo</title>
+    <title>Update Todo</title>
 </head>
 
 <body>
@@ -17,18 +17,18 @@
     </div>
 
     <div id="header" class ="header">
-        <h2>Update To Do</h2>
-        <input id="inpTodoTitle" type="text" placeholder="Title">
+        <h2>Update List</h2>
+        <input id="inpTodoTitle" type="text" placeholder="Old Title">
         <input id="inpNewTodoTitle" type="text" placeholder="New Title">
-        <input type="button" id="updateTitle" value="Update Title"></input>
+        <button id="updateTitle">Title <i class="fa fa-edit"></i></button>
     </div>
 
     <div id="header" class ="header">
-        <h2>Update Task</h2>
-        <input id="inpTodoTask" type="text" placeholder="Task">
+        <h2>Update List Items</h2>
+        <input id="inpTodoTask" type="text" placeholder="Old Task">
         <input id="inpNewTodoTask" type="text" placeholder="New Task">
         <input id="inpId" type="text" placeholder="ID">
-        <input type="button" id="updateTask" value="Update Task"></input>
+        <button id="updateTask">Task <i class="fa fa-edit"></i></button>
     </div>
     
     <hr>
@@ -68,9 +68,7 @@
                 body:JSON.stringify(body)
             }
 
-            fetch("/todo/title/update",cfg).then(resp => {
-                console.log(resp.status)
-            })
+            fetch("/todo/title/update",cfg);
 
             setTimeout(function(){
                 location.reload();
@@ -98,9 +96,7 @@
                 body:JSON.stringify(body)
             }
 
-            fetch("/todo/task/update",cfg).then(resp => {
-                console.log(resp.status)
-            })
+            fetch("/todo/task/update",cfg);
 
             setTimeout(function(){
                 location.reload();
@@ -124,43 +120,39 @@
             }
 
             try{
-                    let response = await fetch(("/gettodoTitle"), cfg);
-                    let data = await response.json();
-                    let secondRepsone = await fetch("/gettodo", cfg);
-                    let secondData = await secondRepsone.json();
+                let response = await fetch(("/gettodoTitle"), cfg);
+                let data = await response.json();
+                let secondRepsone = await fetch("/gettodo", cfg);
+                let secondData = await secondRepsone.json();
 
-                    console.log(data);
-                    console.log(secondData.rows);
-
-                    for(let secondtododata of secondData.rows){
-                        let div = document.createElement("div");
-                        div.classList.add("textStyle")
-                         let html= `
+                for(let secondtododata of secondData.rows){
+                    let div = document.createElement("div");
+                    div.classList.add("textStyle")
+                    let html= `                        
+                        <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`
                             
-                            <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`
-                            
-                        div.innerHTML = html;
-                        todoContainer.appendChild(div);
-                    }
+                    div.innerHTML = html;
+                    todoContainer.appendChild(div);
+                }
                 
-                   for(let tododata of data.rows){
-                        let list = tododata.array_agg + '';
-                        list = list.split(",");
-                        let div = document.createElement("div");
-                        div.classList.add("todoStyle")
-                         let html= ` 
-                            <h2>${tododata.Title_Name}</h2>`
+               for(let tododata of data.rows){
+                    let list = tododata.array_agg + '';
+                    list = list.split(",");
+                    let div = document.createElement("div");
+                    div.classList.add("todoStyle")
+                     let html= ` 
+                        <h2>${tododata.Title_Name}</h2>`
                             
-                        for(let i = 0; i<list.length; i++){
-                            html += `<ul><li>${list[i]}</li></ul>`;
-                        }
-
-                        div.innerHTML = html;
-                        todoContainer.appendChild(div); 
+                    for(let i = 0; i<list.length; i++){
+                        html += `<ul><li>${list[i]}</li></ul>`;
                     }
-                }catch(err){
-                    outtext.innerHTML = err;
-            }}
+
+                    div.innerHTML = html;
+                    todoContainer.appendChild(div); 
+                }
+            }catch(err){
+                outtext.innerHTML = err;
+        }}
 
 
     </script>

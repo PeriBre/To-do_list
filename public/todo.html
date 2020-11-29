@@ -17,20 +17,21 @@
     </div>
 
     <div id="header" class ="header">
-        <h2>To Do</h2>
+        <h2>Create List</h2>
         <input id="inpTodoTitle" type="text" placeholder="Title">
         <input type="button" id="submitTitle" value="Add Title"></input>
-        <p>For å legge til tittel, skriv inn og trykk på knapp</p>
     </div>
     
     <div id="header" class ="header">
+        <h2>Create List Items</h2>
+        <p>To add task, write in task, and List ID</p>
+        <br>
         <input id="inpTodoTask" type="text" placeholder="Task">
     </div>
 
     <div id="header" class="header">
         <input id="inpID" type="text" placeholder="ID">
         <input type="button" id="submitTask" value="Add Task"></input>
-        <p>For å legge til task, skriv inn task, og id som blir generert til tittel og trykk på knapp</p>
     </div>
 
     
@@ -71,9 +72,7 @@
                 body:JSON.stringify(body)
             }
             
-            fetch("/todo/title",cfg).then(resp => {
-                console.log(resp.status)
-            })
+            fetch("/todo/title",cfg);
 
             setTimeout(function(){
                 location.reload();
@@ -97,9 +96,7 @@
                 body:JSON.stringify(body)
             }
             
-            fetch("/todo/task",cfg).then(resp => {
-                console.log(resp.status)
-            })
+            fetch("/todo/task",cfg)
 
             setTimeout(function(){
                 location.reload();
@@ -126,20 +123,17 @@
                     let secondRepsone = await fetch("/gettodo", cfg);
                     let secondData = await secondRepsone.json();
 
-                    console.log(data);
-                    console.log(secondData.rows);
-
                     for(let secondtododata of secondData.rows){
                         let div = document.createElement("div");
                         div.classList.add("textStyle")
                          let html= `
                             
-                            <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`
+                            <p> ID : <h3>${secondtododata.Title_ID}</h3> List: <h3>${secondtododata.Title_Name} | </h3></p>`
                             
                         div.innerHTML = html;
                         todoContainer.appendChild(div);
                     }
-                
+
                    for(let tododata of data.rows){
                         let list = tododata.array_agg + '';
                         list = list.split(",");

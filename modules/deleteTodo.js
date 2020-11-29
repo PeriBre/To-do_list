@@ -8,15 +8,9 @@ class Deletetodo{
         this.valid = false;
     }  
 
-   /* constructor(todo, listItems){
-        this.todo = todo;
-        this.listItems = listItems;
-        this.valid = false;
-    }*/
-
     async delete(){
         try{
-            let response = await database.deleteTodo(this.id/*, this.listItems*/);
+            let response = await database.deleteTodo(this.id);
         }catch(error){
             console.error(error)
         }

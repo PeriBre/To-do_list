@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Todo</title>
+    <title>Delete Todo</title>
 </head>
 
 <body>
-    
+
     <div class ="buttonheader" id="buttons">
         <a type="button" href="todo.html"><i class="fa fa-home"></i></a>
         <a type="button" href="updatetodo.html"><i class="fa fa-edit"></i></a>
         <a type="button" href="deleteuser.html"><i class="fa fa-user"></i></a>
     </div>
-
+    
     <div id="delHeader" class ="delheader">
+        <h2>Delete Lists and Tasks</h2>
+        <p>To delete a whole list: Write ID and press delete list</p>
+        <P>To delete a task: Write Task and ID and press delete list items</P>
         <input id="inpTodoTask" type="text" placeholder="Task">
     </div>
 
@@ -27,9 +30,6 @@
         
     </div>
     
-    <p>For å slette en hel liste: Skriv ID i delete id og trykk delete list</p>
-    <P>For å slette en task: Skriv Task i Task og ID i delete id og trykk delete task</P>
-
     <hr>
 
     <div id="todoContainer"></div>
@@ -38,7 +38,7 @@
     
     <script>
         let todoTask=document.getElementById("inpTodoTask");
-        let tID=document.getElementById("inpID");
+        let todoID=document.getElementById("inpID");
 
 //------------------------------------------------------------------
 
@@ -51,7 +51,7 @@
 
 
         if(emptyStorage == 0 || !logindata.loginUser){
-            outtext.innerHTML = "Not allowed"
+            outtext.innerHTML = "Not allowed"}
 
         loadData();
 
@@ -65,92 +65,87 @@
             }
 
             try{
-                    let response = await fetch(("/gettodoTitle"), cfg);
-                    let data = await response.json();
-                    let secondRepsone = await fetch("/gettodo", cfg);
-                    let secondData = await secondRepsone.json();
+                let response = await fetch(("/gettodoTitle"), cfg);
+                let data = await response.json();
+                let secondRepsone = await fetch("/gettodo", cfg);
+                let secondData = await secondRepsone.json();
 
-                    console.log(data);
-                    console.log(secondData.rows);
-
-                    for(let secondtododata of secondData.rows){
-                        let div = document.createElement("div");
-                        div.classList.add("textStyle")
-                         let html= `
-                            
-                            <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`
-                            
+                for(let secondtododata of secondData.rows){
+                    let div = document.createElement("div");
+                    div.classList.add("textStyle")
+                     let html= `                            
+                        <p> ID : <h3>${secondtododata.Title_ID}</h3> Tittel: <h3>${secondtododata.Title_Name} | </h3></p>`    
                         div.innerHTML = html;
                         todoContainer.appendChild(div);
-                    }
+                }
                 
-                   for(let tododata of data.rows){
-                        let list = tododata.array_agg + '';
-                        list = list.split(",");
-                        let div = document.createElement("div");
-                        div.classList.add("todoStyle")
-                         let html= ` 
-                            <h2>${tododata.Title_Name}</h2>`
+                for(let tododata of data.rows){
+                    let list = tododata.array_agg + '';
+                    list = list.split(",");
+                    let div = document.createElement("div");
+                    div.classList.add("todoStyle")
+                    let html= ` 
+                        <h2>${tododata.Title_Name}</h2>`
                             
-                        for(let i = 0; i<list.length; i++){
-                            html += `<ul><li>${list[i]}</li></ul>`;
-                        }
-
-                        div.innerHTML = html;
-                        todoContainer.appendChild(div); 
+                    for(let i = 0; i<list.length; i++){
+                        html += `<ul><li>${list[i]}</li></ul>`;
                     }
-                }catch(err){
-                    outtext.innerHTML = err;
-            }}
+
+                    div.innerHTML = html;
+                    todoContainer.appendChild(div); 
+                }
+            }catch(err){
+                outtext.innerHTML = err;
+        }}
 
 //-------------------------------------------------------------------------------------------------------
-
+//Delete list
 
         document.getElementById("delBtn").onclick = function(evt){
-                        console.log("you pressed me!!!!");
-                        let body={
-                            id: tID.value
-                        }
+            let body={
+                id: todoID.value
+            }
                         
-                        let cfg = {
-                            method:"DELETE",
-                            headers: {
-                                "content-type": "application/json",
-                                "authorization": logindata.loginUser.isValid
-                            },
-                            body:JSON.stringify(body)
-                        }
+            let cfg = {
+                method:"DELETE",
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": logindata.loginUser.isValid
+                },
+                body:JSON.stringify(body)
+            }
 
                         
-                        fetch("/del",cfg).then(resp => {
-                            console.log(resp.status)
-                        });
-                        setTimeout(function(){
-                            location.reload();
-                        }, 100)
-                    }
+            fetch("/del",cfg);
+
+            setTimeout(function(){
+                location.reload();
+            }, 100)
+        }
+
+//-------------------------------------------------------------------------------------------------------
+//Delete tasks
 
         document.getElementById("delTaskBtn").onclick = function(evt){
             let body={
-                id : tID.value,
+                id : todoID.value,
                 todoTask : todoTask.value
             }
 
             let cfg = {
-                            method:"DELETE",
-                            headers: {
-                                "content-type": "application/json",
-                                "authorization": logindata.loginUser.isValid
-                            },
-                            body:JSON.stringify(body)
-                        }
+                method:"DELETE",
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": logindata.loginUser.isValid
+                },
+                body:JSON.stringify(body)
+            }
 
-                        fetch("/deletetask",cfg).then(resp => {
-                            console.log(resp.status)
-                        });
-                        setTimeout(function(){
-                            location.reload();
-                        }, 100)
+            fetch("/deletetask",cfg);
+
+            setTimeout(function(){
+                location.reload();
+            }, 100)
         }
 
     </script>
