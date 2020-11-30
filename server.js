@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const server = express();
 const port = (process.env.PORT || 8080);
+const secureEndpoints = require("./modules/secureEndpoint");
 
 const db = require("./modules/datahandler");
 
@@ -18,6 +19,8 @@ const upuserpass = require("./modules/updateuser");
 server.set("port", port);
 server.use(express.static("public"));
 server.use(bodyParser.json());
+
+server.use("/secure", secureEndpoints);
 
 server.post("/user/create", async function(req,res){
 
