@@ -176,12 +176,12 @@ class StorageHandler {
         return results;
     }
 
-    async upUserPass(username, upusername, password){
+     async upUserPass(username, upassword, password){
         const client = new pg.Client(this.credentials);
         let results = null;
         try{
             await client.connect();
-            results = await client.query('UPDATE "users" SET "password" = $1 WHERE "username" = $2 and "password" = $3',[upusername,username, password]);
+            results = await client.query('UPDATE "users" SET "password" = $1 WHERE "username" = $2 and "password" = $3',[upassword,username, password]);
             client.end()
         }catch(err){
             client.end()
@@ -190,6 +190,7 @@ class StorageHandler {
         }
         return results;
     }
+
 
     async deleteTodo(id){
         const client = new pg.Client(this.credentials);

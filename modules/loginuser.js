@@ -12,18 +12,16 @@ class Loginuser{
     }
 
     async login(){
-        let loginComplete = false;
+        this.isValid = false;
         try{
             let response = await database.insertLogin(this.username,this.password);
 
             if(response != null){
                 this.isValid = true;
-                loginComplete = true;
             }
         }catch(error){
             console.error(error)
         }
-        return loginComplete;
     }
 
 }
